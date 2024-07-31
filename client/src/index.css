@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input[type="file"] {
+  font-size: 1rem;
+  border-radius: 4px;
+}
+
+input[type="file"]::file-selector-button {
+  font: inherit;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  margin-right: 1.2rem;
+  border-radius: 4px;
+  border: none;
+  background-color: #059669;
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    background-colorrgb(120, 120, 244);
+}
