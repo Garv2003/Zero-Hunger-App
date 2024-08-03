@@ -6,9 +6,10 @@ import Button from "../../ui/Button";
 import { useAuthContext } from "../../context/AuthProvider";
 import useCreatePost from "./useCreatePost";
 
-import { uploadPostImage } from "../../utils/uploadImage";
+import Loader from "../../ui/Loader";
+import propTypes from "prop-types";
 
-function CreatePost() {
+function CreatePost({ closeModal }) {
   const { user } = useAuthContext();
 
   const {
@@ -21,19 +22,21 @@ function CreatePost() {
   const { createPost, isCreating } = useCreatePost();
 
   const onSubmit = async (data) => {
-    const image = await uploadPostImage(data.image[0]);
     const newPost = {
       name: data.name,
       title: data.title,
       description: data.description,
-      image: image,
+      image: data.image,
+      author: user._id,
     };
-    createPost(newPost);
+    createPost(
+      { newPost: newPost },
+      {
+        onSuccess: () => closeModal(),
+        onError: () => closeModal(),
+      },
+    );
   };
-
-  if (isCreating) {
-    return <p>Creating Post...</p>;
-  }
 
   return (
     <div className="p-4">
@@ -41,9 +44,10 @@ function CreatePost() {
         onSubmit={handleSubmit(onSubmit)}
         className="flex w-full flex-col gap-1"
       >
+        {isCreating && <Loader type={2} />}
         <div>
           <label htmlFor="name" className="text-sm font-medium">
-            Organization Name
+            Organization
           </label>
           <div className="my-1 w-full">
             <input
@@ -131,5 +135,9 @@ function CreatePost() {
     </div>
   );
 }
+
+CreatePost.propTypes = {
+  closeModal: propTypes.func,
+};
 
 export default CreatePost;

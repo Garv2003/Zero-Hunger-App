@@ -10,6 +10,9 @@ import testRouter from "./routes/test.js";
 import UserRouter from "./routes/users.js";
 import donation from "./routes/donation.js";
 import post from "./routes/post.js";
+import photo from "./routes/photo.js";
+import feedback from "./routes/feedback.js";
+import message from "./routes/message.js";
 
 import jwtVerify from "./middleware/verifyToken.js";
 
@@ -30,6 +33,9 @@ app.use("/api/auth", authRouter);
 app.use("/api/users", UserRouter);
 app.use("/api/donation", donation);
 app.use("/api/post", post);
+app.use("/api/photo", photo);
+app.use("/api/feedback", feedback);
+app.use("/api/message", message);
 
 connectDB();
 

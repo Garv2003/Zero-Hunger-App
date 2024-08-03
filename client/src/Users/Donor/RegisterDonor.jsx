@@ -7,6 +7,7 @@ import { FaEye } from "react-icons/fa";
 import { TbEyeClosed } from "react-icons/tb";
 import BackBtn from "../../ui/BackBtn";
 import useRegisterUser from "../useRegisterUser";
+import Loader from "../../ui/Loader";
 
 function RegisterDonor() {
   const {
@@ -36,7 +37,7 @@ function RegisterDonor() {
   };
 
   if (issigningUser) {
-    return <p>Signing up...</p>;
+    <Loader />;
   }
 
   return (

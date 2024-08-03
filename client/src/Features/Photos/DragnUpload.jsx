@@ -4,18 +4,20 @@ import Button from "../../ui/Button";
 import { useState } from "react";
 import { useAuthContext } from "../../context/AuthProvider";
 import useUploadPhoto from "./useUploadPhoto"; // Update the upload hook
+import propTypes from "prop-types";
+import Loader from "../../ui/Loader";
 
-function DragnUpload({ closeModal, id }) {
+function DragnUpload({ closeModal, organization }) {
   const { handleSubmit, control, setValue } = useForm();
   const [fileName, setFileName] = useState("");
   const { user } = useAuthContext();
 
-  const { uploadPhoto, isUploading } = useUploadPhoto(id); // Update the upload function
+  const { uploadPhoto, isUploading } = useUploadPhoto(organization); // Update the upload function
 
   const onSubmit = (data) => {
     console.log("Form Data:", data);
     uploadPhoto(
-      { email: user.email, image: data }, // Update the payload
+      { _id: user._id, image: data }, // Update the payload
       {
         onSuccess: () => closeModal(),
         onError: () => closeModal(),
@@ -34,6 +36,8 @@ function DragnUpload({ closeModal, id }) {
     }
   };
 
+  if (isUploading) return <Loader type={2} />;
+
   return (
     <div className="min-w-[30rem] p-4">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
@@ -49,12 +53,18 @@ function DragnUpload({ closeModal, id }) {
             />
           )}
         />
-        <Button purpose="submit" type="patient" disabled={isUploading}>
+        <Button purpose="submit" type="doctor" disabled={isUploading}>
+          {" "}
           {isUploading ? "Uploading..." : "Submit"}
         </Button>
       </form>
     </div>
   );
 }
+
+DragnUpload.propTypes = {
+  closeModal: propTypes.func.isRequired,
+  organization: propTypes.object.isRequired,
+};
 
 export default DragnUpload;

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { uploadProfileImage } from "../utils/uploadImage";
 
 export async function getPosts() {
   try {
@@ -15,13 +16,18 @@ export async function getPosts() {
     } else {
       throw new Error(res.data.message);
     }
-  } catch (err) {
-    throw new Error(err.message);
+  } catch (error) {
+    throw new Error(error);
   }
 }
 
-export async function newPost(newPost) {
+export async function newPostFunc({ newPost }) {
+  console.log(newPost);
   try {
+    if (typeof newPost.image !== "string") {
+      newPost.image = await uploadProfileImage(newPost.image[0]);
+    }
+    console.log(newPost);
     const res = await axios.post(
       import.meta.env.VITE_API_URL + "/api/post/create",
       newPost,
@@ -36,7 +42,8 @@ export async function newPost(newPost) {
     } else {
       throw new Error(res.data.message);
     }
-  } catch (err) {
-    throw new Error(err.message);
+  } catch (error) {
+    console.log(error);
+    throw new Error(error);
   }
 }

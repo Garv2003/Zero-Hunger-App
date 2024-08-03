@@ -4,6 +4,7 @@ import { useAuthContext } from "../context/AuthProvider";
 
 function Profile() {
   const { user } = useAuthContext();
+  console.log(user);
 
   return (
     <section className="h-full w-full">

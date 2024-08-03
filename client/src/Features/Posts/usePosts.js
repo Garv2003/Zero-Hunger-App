@@ -4,9 +4,7 @@ import { getPosts } from "../../services/apiPosts";
 function usePosts() {
   const { data: postsList, isPending: loadingPosts } = useQuery({
     queryKey: ["posts"],
-    queryFn: async () => {
-      return await getPosts();
-    },
+    queryFn: getPosts,
   });
   return { postsList, loadingPosts };
 }

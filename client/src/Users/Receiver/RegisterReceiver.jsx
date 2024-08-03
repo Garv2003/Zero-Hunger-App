@@ -9,6 +9,7 @@ import { uploadProfileImage } from "../../utils/uploadImage";
 
 import BackBtn from "../../ui/BackBtn";
 import useRegisterUser from "../useRegisterUser";
+import Loader from "../../ui/Loader";
 
 function RegisterReceiver() {
   const {
@@ -33,7 +34,6 @@ function RegisterReceiver() {
       },
       email: data.userEmail,
       password: data.password1,
-      description: data.description,
       image: image,
       location: data.location,
     };
@@ -41,7 +41,7 @@ function RegisterReceiver() {
   };
 
   if (issigningUser) {
-    return <p>Signing up...</p>;
+    return <Loader />;
   }
 
   return (
@@ -109,7 +109,7 @@ function RegisterReceiver() {
               {errors.location && <Error>{errors.location.message}</Error>}
             </div>
           </div>
-          <div className="w-full">
+          {/* <div className="w-full">
             <label htmlFor="description" className="text-sm font-medium">
               Description
             </label>
@@ -125,7 +125,7 @@ function RegisterReceiver() {
                 <Error>{errors.description.message}</Error>
               )}
             </div>
-          </div>
+          </div> */}
           <div className="w-full">
             <label htmlFor="password1" className="text-sm font-medium">
               Password

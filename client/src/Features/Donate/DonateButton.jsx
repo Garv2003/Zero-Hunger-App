@@ -15,8 +15,8 @@ function DonateButton({ onClick }) {
   ) : null;
 }
 
-DonateButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
+// DonateButton.propTypes = {
+//   onClick: PropTypes.func.isRequired,
+// };
 
 export default DonateButton;

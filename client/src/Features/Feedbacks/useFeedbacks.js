@@ -1,12 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
+import { getFeedbacks } from "../../services/apiFeebacks";
 
-function useFeedbacks(id) {
+function useFeedbacks(organization) {
   const { data: feedbacksList, isPending: loadingFeedbacks } = useQuery({
-    queryKey: ["feedbacks", id],
+    queryKey: ["feedbacks", organization._id],
     queryFn: () => {
-      //   getDonations();
-      //handle fetch donations
-      return [];
+      return getFeedbacks(organization._id);
     },
   });
   return { feedbacksList, loadingFeedbacks };

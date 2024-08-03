@@ -12,6 +12,7 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     if (
       window.location.pathname !== "/login" ||
+      window.location.pathname !== "/" ||
       window.location.pathname !== "/signup"
     ) {
       socket.current = io(socketUrl, {
@@ -38,7 +39,7 @@ SocketProvider.propTypes = {
   children: PropType.node.isRequired,
 };
 
-export function UseSocket() {
+export function useSocket() {
   const context = useContext(SocketContext);
   if (!context) {
     throw new Error("null value");

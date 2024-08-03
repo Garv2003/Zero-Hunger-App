@@ -4,6 +4,8 @@ import Button from "../../ui/Button";
 import { useAuthContext } from "../../context/AuthProvider";
 import axios from "axios";
 import propTypes from "prop-types";
+import useEditProfile from "../useEditProfile";
+import Loader from "../../ui/Loader";
 
 function EditDonorProfileForm({ closeModal }) {
   const { user } = useAuthContext();
@@ -22,35 +24,28 @@ function EditDonorProfileForm({ closeModal }) {
     },
   });
 
+  const { editProfileFunc, isUpdating } = useEditProfile();
   const onSubmit = async (data) => {
+    console.log(data);
     const newUser = {
       name: data.name,
       phone: data.phone,
       email: data.userEmail,
       location: data.location,
     };
-    try {
-      const response = await axios.post(
-        import.meta.env.VITE_API_URL + `/api/auth/update/${user._id}`,
-        newUser,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        },
-      );
-      const { user: updatedUser } = response.data;
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      reset();
-      closeModal();
-    } catch (error) {
-      console.log(error);
-    }
+    editProfileFunc(
+      { newUser: newUser, _id: user._id },
+      {
+        onSuccess: closeModal,
+        onError: closeModal,
+      },
+    );
   };
 
   return (
     <div className="p-4">
+      {isUpdating && <Loader type={2} />}
+
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="mx-auto flex w-full max-w-[30rem] flex-col gap-1 p-4"
@@ -84,13 +79,11 @@ function EditDonorProfileForm({ closeModal }) {
             <input
               type="email"
               autoComplete="on"
-              className="w-full flex-1 rounded-md bg-stone-100 p-2 text-sm shadow-sm"
+              className="w-full flex-1 rounded-md bg-stone-100 p-2 text-sm shadow-sm disabled:bg-stone-300"
               id="userEmail"
-              {...register("userEmail", {
-                required: "Please enter your email",
-              })}
+              {...register("userEmail")}
+              disabled
             />
-            {errors.userEmail && <Error>{errors.userEmail.message}</Error>}
           </div>
         </div>
         <div>
@@ -132,7 +125,12 @@ function EditDonorProfileForm({ closeModal }) {
         </div>
 
         <div className="mt-4 flex w-full justify-end gap-2">
-          <Button type="doctor" purpose="submit" size="small" disabled={false}>
+          <Button
+            type="doctor"
+            purpose="submit"
+            size="small"
+            disabled={isUpdating}
+          >
             Update
           </Button>
           <Button

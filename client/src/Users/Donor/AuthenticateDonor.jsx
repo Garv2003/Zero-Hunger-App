@@ -7,6 +7,7 @@ import Button from "../../ui/Button";
 import BackBtn from "../../ui/BackBtn";
 import useAuthenticateUser from "../useAuthenticateUser";
 import Error from "../../ui/Error";
+import Loader from "../../ui/Loader";
 
 function AuthenticateDonor() {
   const {
@@ -28,7 +29,7 @@ function AuthenticateDonor() {
     authenticateFunc(creds);
   };
 
-  if (islogingUser) return <p>Loading</p>;
+  if (islogingUser) return <Loader />;
 
   return (
     <>

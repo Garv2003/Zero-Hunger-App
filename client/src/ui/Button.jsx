@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+
 function Button({
   type,
   children,
@@ -18,7 +20,7 @@ function Button({
   }, [size]);
   const types = useMemo(() => {
     return {
-      doctor: `${initial} ${sizes[size]} bg-red-500 text-white hover:bg-red-600`,
+      doctor: `${initial} ${sizes[size]} bg-red-500 text-white border-none rounded-none hover:bg-red-600`,
       patient: `${initial} ${sizes[size]}  bg-blue-500 text-white hover:bg-blue-600`,
       cancel: `${initial} ${sizes[size]}  border  text-stone-500 hover:bg-stone-100 `,
     };
@@ -48,5 +50,15 @@ function Button({
     </button>
   );
 }
+
+Button.propTypes = {
+  type: PropTypes.oneOf(["doctor", "patient", "cancel"]).isRequired,
+  children: PropTypes.node.isRequired,
+  to: PropTypes.string,
+  onClick: PropTypes.func,
+  size: PropTypes.oneOf(["small", "large"]),
+  purpose: PropTypes.oneOf(["submit", "reset"]),
+  disabled: PropTypes.bool,
+};
 
 export default Button;

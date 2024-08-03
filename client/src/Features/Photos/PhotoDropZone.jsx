@@ -1,6 +1,7 @@
 import { MdFileUpload } from "react-icons/md";
 import { FaFile } from "react-icons/fa";
 import { useDropzone } from "react-dropzone";
+import propTypes from "prop-types";
 
 function PhotoDropZone({ onDrop, name, fileName }) {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -37,5 +38,11 @@ function PhotoDropZone({ onDrop, name, fileName }) {
     </div>
   );
 }
+
+PhotoDropZone.propTypes = {
+  onDrop: propTypes.func.isRequired,
+  name: propTypes.string.isRequired,
+  fileName: propTypes.string,
+};
 
 export default PhotoDropZone;

@@ -1,14 +1,16 @@
-import socket from "socket.io";
+import { Server as socketIo } from "socket.io";
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
 import compression from "compression";
+import http from "http";
+import dotenv from "dotenv";
 
 const app = express();
-const server = require("http").createServer(app);
+const server = http.createServer(app);
 
-require("dotenv").config();
+dotenv.config();
 
 app.use(
   cors({
@@ -25,7 +27,7 @@ app.get("/", (req, res) => {
   res.send("Server is Running");
 });
 
-const io = socket(server, {
+const io = new socketIo(server, {
   cors: {
     origin: process.env.CLIENT_URL,
     credentials: true,
@@ -40,23 +42,20 @@ const addUser = (userId, socketId) => {
   }
 };
 
-const getUser = (userId) => {
-  return users.find((user) => user.userId === userId);
-};
-
 const removeUser = (socketId) => {
   users = users.filter((user) => user.socketId !== socketId);
 };
 
 io.on("connection", (socket) => {
   console.log("User Connected");
+
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
     io.emit("getUsers", users);
   });
 
   socket.on("sendMessage", ({ senderId, receiverId, text, createdAt }) => {
-    let user = getUser(receiverId);
+    let user = users.find((user) => user.userId === receiverId);
     io.to(user?.socketId).emit("getMessage", { senderId, text, createdAt });
   });
 
@@ -73,5 +72,5 @@ io.on("connection", (socket) => {
 });
 
 server.listen(process.env.PORT || 4444, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
+  console.log(`Server is running on port ${process.env.PORT || 4444}`);
 });

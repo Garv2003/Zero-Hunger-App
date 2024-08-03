@@ -1,19 +1,21 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import { addPhoto } from "../../services/apiPhotos";
 
-function useUploadPhoto({ id }) {
+function useUploadPhoto(organization) {
   const queryClient = useQueryClient();
+
   const { mutate: uploadPhoto, isPending: isUploading } = useMutation({
-    mutationFn: (d) => console.log(d),
+    mutationFn: (image) => addPhoto({ image: image }),
     onSuccess: () => {
-      toast.success("PDF Uploaded successfully");
       queryClient.invalidateQueries({
-        queryKey: ["photos", id],
+        queryKey: ["photos", organization._id],
       });
+      toast.success("Photo uploaded successfully");
     },
     onError: (e) => {
       console.log(e);
-      toast.error("Failed to upload pdf");
+      toast.error("Failed to upload photo");
     },
   });
   return { uploadPhoto, isUploading };

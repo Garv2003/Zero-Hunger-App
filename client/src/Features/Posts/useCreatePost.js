@@ -1,11 +1,21 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { newPost } from "../../services/apiPosts";
+import { newPostFunc } from "../../services/apiPosts";
+import toast from "react-hot-toast";
 
 function useCreatePost() {
+  const queryClient = useQueryClient();
   const { mutate: createPost, isPending: isCreating } = useMutation({
-    mutationFn: (d) => {
-      newPost(d);
+    mutationFn: ({ newPost }) => newPostFunc({ newPost }),
+    onSuccess: () => {
+      toast.success("Post created");
+      queryClient.invalidateQueries({
+        queryKey: ["posts"],
+      });
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error("Failed to create post");
     },
   });
   return { createPost, isCreating };

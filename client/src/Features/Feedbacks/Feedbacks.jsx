@@ -2,8 +2,9 @@ import Modal from "../../ui/Modal";
 import FeedbackList from "./FeedbackList";
 import CreateFeedbackForm from "./CreateFeedbackForm";
 import { useAuthContext } from "../../context/AuthProvider";
+import propTypes from "prop-types";
 
-function Feedbacks() {
+function Feedbacks({ organization }) {
   const { user } = useAuthContext();
 
   return (
@@ -17,14 +18,18 @@ function Feedbacks() {
               </button>
             </Modal.Open>
             <Modal.Window name="feedbackForm">
-              <CreateFeedbackForm />
+              <CreateFeedbackForm organization={organization} />
             </Modal.Window>
           </Modal>
         )}
       </div>
-      <FeedbackList />
+      <FeedbackList organization={organization} />
     </div>
   );
 }
+
+Feedbacks.propTypes = {
+  organization: propTypes.object.isRequired,
+};
 
 export default Feedbacks;

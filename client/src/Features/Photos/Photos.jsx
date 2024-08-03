@@ -1,19 +1,25 @@
 import { useAuthContext } from "../../context/AuthProvider";
 import PhotosList from "./PhotosList";
 import UploadPhotoButton from "./UploadPhotoButton";
-function Photos({ organisation }) {
+import propTypes from "prop-types";
+
+function Photos({ organization }) {
   const { user } = useAuthContext();
-  console.log(organisation, user.email);
+  console.log(organization);
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex w-full flex-col gap-4">
       <div>
-        {user.user.type !== "Donor" && organisation.email === user.email && (
-          <UploadPhotoButton id={organisation} />
+        {user.user.type !== "Donor" && organization.email === user.email && (
+          <UploadPhotoButton organization={organization} />
         )}
       </div>
-      <PhotosList />
+      <PhotosList organization={organization} />
     </div>
   );
 }
+
+Photos.propTypes = {
+  organization: propTypes.object.isRequired,
+};
 
 export default Photos;

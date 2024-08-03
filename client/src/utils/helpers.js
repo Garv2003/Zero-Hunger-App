@@ -10,3 +10,10 @@ export function compareIsoDates(date1, date2) {
     return 0;
   }
 }
+
+export function formatCurrencyInINR(amount) {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  }).format(amount);
+}

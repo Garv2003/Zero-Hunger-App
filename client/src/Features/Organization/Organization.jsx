@@ -5,7 +5,7 @@ import CreateDonateForm from "../Donate/CreateDonateForm";
 
 import Button from "../../ui/Button";
 import { useState } from "react";
-import FeedbackList from "../Feedbacks/FeedbackList";
+import Feedbacks from "../Feedbacks/Feedbacks";
 
 import Photos from "../Photos/Photos";
 import EditOrganizationProfileForm from "../../Users/Receiver/EditOrganizationProfileForm";
@@ -13,6 +13,8 @@ import useOrganizationById from "./useOrganizationById";
 import { useParams } from "react-router-dom";
 import PropsTypes from "prop-types";
 import { useAuthContext } from "../../context/AuthProvider";
+import Loader from "../../ui/Loader";
+import Organizations from "../../pages/Organizations";
 
 function Organization({ active }) {
   const { user } = useAuthContext();
@@ -21,31 +23,55 @@ function Organization({ active }) {
   const { organization, loadingOrganization } = useOrganizationById(
     organizationId || user._id,
   );
+
   const [activeTab, setActiveTab] = useState("feedbacks");
 
   if (loadingOrganization) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="m-4 flex flex-col gap-10 sm:flex-row sm:gap-4">
-        <div className="order-1 flex flex-col items-center gap-4 sm:items-start">
-          <div className="flex flex-col gap-4">
-            <h1 className="font-mono text-3xl font-semibold text-stone-700">
+    <div className="flex w-full flex-col gap-4">
+      <div className="mb-10 mt-4 flex w-full flex-col gap-10 rounded-lg border px-4 py-4 shadow-lg sm:flex-row sm:justify-around sm:gap-4">
+        <div className="order-2 flex w-fit flex-col items-center gap-4 p-4 sm:items-start">
+          <div className="flex w-full flex-col gap-4">
+            <h1 className="font-serif text-3xl font-semibold text-stone-700">
               {organization.name}
             </h1>
-            <p className="flex flex-col items-end gap-1 text-sm italic text-stone-500">
-              <span>{active ? "abc@test.com" : organization?.email}</span>
-              <span>{organization?.phone}</span>
-              <span>{organization?.location}</span>
+            <p className="flex flex-col">
+              <div className="grid grid-cols-[100px_1fr]">
+                <span className="text-lg font-medium text-stone-600">
+                  Email
+                </span>
+                <span>{organization?.email}</span>
+              </div>
+              <div className="grid grid-cols-[100px_1fr]">
+                <span className="font-medium text-stone-600">Phone</span>
+                {organization?.phone ? (
+                  <span>{organization?.phone}</span>
+                ) : (
+                  <span>&mdash;</span>
+                )}
+              </div>
+              <div className="grid grid-cols-[100px_1fr]">
+                <span className="font-medium text-stone-600">Location</span>
+                {organization?.location ? (
+                  <span>{organization?.location}</span>
+                ) : (
+                  <span>&mdash;</span>
+                )}
+              </div>
             </p>
           </div>
-          <p className="mt-4 bg-stone-50 p-4 text-sm text-stone-700">
-            {organization.description}
-          </p>
-          <div className="flex items-center gap-4">
-            {!active && (
+          <div className="max-w-full">
+            {organization.description && (
+              <p className="mb-4 max-w-full rounded-md bg-red-50 p-4 text-sm text-stone-700 shadow-md">
+                {organization.description}
+              </p>
+            )}
+          </div>
+          <div className="flex w-full items-start gap-4">
+            {!active && user.user.type === "Donor" && (
               <button className="flex items-center gap-2 rounded-md bg-red-500 px-4 py-2 text-sm text-white shadow-md transition-all duration-100 hover:bg-red-600">
                 <IoChatbox />
                 Chat
@@ -73,8 +99,11 @@ function Organization({ active }) {
           </div>
         </div>
 
-        <div className="mx-auto h-[300px] w-full sm:order-2 sm:w-[20rem]">
-          <img src={organization.image} className="h-full w-full rounded-md" />
+        <div className="order-1 mx-auto w-60 sm:mx-0 sm:w-[500px]">
+          <img
+            src={organization.image}
+            className="h-full w-full rounded-md object-contain"
+          />
         </div>
       </div>
       <div className="flex justify-center">
@@ -96,12 +125,17 @@ function Organization({ active }) {
       <div className="py-5">
         <div className="flex flex-col gap-4">
           {activeTab === "feedbacks" ? (
-            <FeedbackList organization={{ email: organization.email }} />
+            <Feedbacks
+              organization={{
+                _id: organization._id,
+                email: organization.email,
+              }}
+            />
           ) : (
             <Photos
               organization={{
-                id: organization._id,
-                email: active ? "abc@test.com" : organization.email,
+                _id: organization._id,
+                email: organization.email,
               }}
             />
           )}

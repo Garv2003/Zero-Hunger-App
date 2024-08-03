@@ -22,7 +22,7 @@ function AppLayout() {
         closeSidebar={closeSidebar}
       />
       <Navbar showSidebar={showSidebar} handleSidebar={handleSidebar} />
-      <div className="h-full w-full bg-white p-4 sm:p-10">
+      <div className="h-full w-full bg-white px-4 py-10 sm:p-10">
         <main className="mx-auto flex h-full w-full max-w-[800px] flex-col items-center">
           <Outlet />
         </main>

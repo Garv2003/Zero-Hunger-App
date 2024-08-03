@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
+import propTypes from "prop-types";
 
 const authContext = createContext();
 
@@ -32,5 +33,9 @@ export function useAuthContext() {
   }
   return data;
 }
+
+AuthProvider.propTypes = {
+  children: propTypes.node.isRequired,
+};
 
 export default AuthProvider;

@@ -14,7 +14,7 @@ function Home() {
           <h3 className="font-mono text-xl font-bold uppercase text-stone-700">
             Home
           </h3>
-          {user.user.category === "Organization" && (
+          {user.user.type === "Receiver" && (
             <Modal.Open opens="createPost">
               <Button type="cancel" size="small">
                 Create Post

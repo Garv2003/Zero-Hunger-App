@@ -1,13 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { getPhotos } from "../../services/apiPhotos";
 
-function usePhotos(id) {
+function usePhotos(organization) {
   const { data: photosList, isPending: loadingPhotos } = useQuery({
-    queryKey: ["photos", id],
+    queryKey: ["photos", organization._id],
     queryFn: () => {
-      //   getPhotos(id);
-      //handle fetch donations
-      return [];
+      return getPhotos(organization._id);
     },
   });
   return { photosList, loadingPhotos };

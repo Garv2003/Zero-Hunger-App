@@ -15,18 +15,21 @@ function Landing() {
   return (
     <div className="flex h-screen w-screen flex-col bg-red-500 text-white">
       <div className="flex items-center justify-end gap-4 p-4">
-        <button>Login</button>
-        <button>Signup</button>
+        <Link to="/login">Login</Link>
+        <Link to="/signup">Signup</Link>
       </div>
       <div className="mx-auto flex h-full w-full max-w-[40rem] flex-col items-center justify-center gap-4">
         <h1 className="bg-yellow-500 p-4 text-2xl font-bold text-black">
           Zero Hunger - Food Donation{" "}
         </h1>
         <p className="text-center text-xl font-semibold">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cumque, rem
-          sequi ea porro dignissimos similique officiis quaerat laudantium
-          architecto animi obcaecati, distinctio odit delectus laboriosam harum
-          accusantium consequuntur necessitatibus fuga.
+          The Zero Hunger - Food Donation project aims to create a platform that
+          connects individuals, businesses, and organizations with surplus food
+          to those in need. This platform will streamline the process of food
+          donation, ensuring that excess food reaches communities and
+          individuals facing food insecurity. By leveraging technology, the
+          project will facilitate efficient and effective food redistribution,
+          reducing food waste and addressing hunger.
         </p>
         <Link
           to="/login"

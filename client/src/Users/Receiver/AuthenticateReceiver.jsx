@@ -6,6 +6,7 @@ import Error from "../../ui/Error";
 import Button from "../../ui/Button";
 import BackBtn from "../../ui/BackBtn";
 import useAuthenticateUser from "../useAuthenticateUser";
+import Loader from "../../ui/Loader";
 
 function AuthenticateReceiver() {
   const {
@@ -28,7 +29,7 @@ function AuthenticateReceiver() {
   };
 
   if (islogingUser) {
-    return <p>Logging in...</p>;
+    return <Loader />;
   }
 
   return (

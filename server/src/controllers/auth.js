@@ -90,6 +90,7 @@ export const login = async (req, res) => {
         name: user.name,
         email: user.email,
         location: user.location,
+        phone: user.phone,
         user: user.user,
         image: user.image,
         description: user.description,
@@ -116,19 +117,17 @@ export const updateProfile = async (req, res) => {
     user.location = req.body.location;
     user.phone = req.body.phone;
 
-    if (req.body.user.type === "Organization") {
+    if (req.user.user.type === "Receiver") {
       user.image = req.body.image;
       user.description = req.body.description;
     }
 
     await user.save();
-
+    console.log(user);
     res.status(200).json({
       success: true,
       user: user,
     });
-
-    return;
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error.message });

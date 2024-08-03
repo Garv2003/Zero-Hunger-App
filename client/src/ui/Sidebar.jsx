@@ -7,6 +7,8 @@ import { createPortal } from "react-dom";
 import { AiOutlineMenuFold } from "react-icons/ai";
 import useDetectClickOutside from "../hooks/useDetectClickOutside";
 import { useAuthContext } from "../context/AuthProvider";
+import { HiChatBubbleBottomCenterText } from "react-icons/hi2";
+
 import propTypes from "prop-types";
 
 const navLinks = [
@@ -17,6 +19,10 @@ const navLinks = [
     label: "Organizations",
   },
   {
+    icon: <HiChatBubbleBottomCenterText />,
+    label: "Messages",
+  },
+  {
     icon: <IoReceipt />,
     label: "Donations",
   },
@@ -25,6 +31,7 @@ const navLinks = [
 function Sidebar({ showSidebar, handleSidebar, closeSidebar }) {
   const { ref } = useDetectClickOutside(closeSidebar);
   const { user } = useAuthContext();
+  console.log(user);
   return (
     <>
       <div

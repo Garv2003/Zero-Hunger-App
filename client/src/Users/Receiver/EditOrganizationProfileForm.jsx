@@ -2,10 +2,12 @@ import { useForm } from "react-hook-form";
 import Error from "../../ui/Error";
 import Button from "../../ui/Button";
 import propTypes from "prop-types";
-import axios from "axios";
-import { uploadProfileImage } from "../../utils/uploadImage";
 
-function EditOrganizationProfileForm({ organization }) {
+import { uploadProfileImage } from "../../utils/uploadImage";
+import useEditProfile from "../useEditProfile";
+import Loader from "../../ui/Loader";
+
+function EditOrganizationProfileForm({ organization, closeModal }) {
   const {
     register,
     handleSubmit,
@@ -21,15 +23,13 @@ function EditOrganizationProfileForm({ organization }) {
       description: organization.description,
     },
   });
+  const { editProfileFunc, isUpdating } = useEditProfile();
 
-  const onSubmit = async (data) => {
-    if (typeof data.image[0] !== "string") {
-      data.image = await uploadProfileImage(data.image[0]);
-    }
+  const onSubmit = (data) => {
     const newUser = {
       name: data.name,
       user: {
-        type: "Organization",
+        type: "Receiver",
       },
       email: data.userEmail,
       phone: data.phone,
@@ -37,27 +37,18 @@ function EditOrganizationProfileForm({ organization }) {
       location: data.location,
       description: data.description,
     };
-    try {
-      const response = await axios.post(
-        import.meta.env.VITE_API_URL + `/api/auth/update/${organization._id}`,
-        newUser,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        },
-      );
-      const { user: updatedUser } = response.data;
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      reset();
-    } catch (error) {
-      console.log(error);
-    }
+    editProfileFunc(
+      { newUser: newUser, _id: organization._id },
+      {
+        onSuccess: () => closeModal(),
+        onError: () => closeModal(),
+      },
+    );
   };
 
   return (
     <div className="p-4">
+      {isUpdating && <Loader type={2} />}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="mx-auto flex w-full max-w-[30rem] flex-col gap-1"
@@ -175,6 +166,7 @@ function EditOrganizationProfileForm({ organization }) {
             onClick={(e) => {
               e.preventDefault();
               reset();
+              closeModal();
             }}
           >
             Cancel

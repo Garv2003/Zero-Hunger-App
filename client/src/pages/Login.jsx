@@ -1,5 +1,5 @@
 import AuthenticateDonor from "../Users/Donor/AuthenticateDonor";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AuthenticateReceiver from "../Users/Receiver/AuthenticateReceiver";
 
 function Login() {
@@ -7,6 +7,11 @@ function Login() {
   function handleClick(thing) {
     setUserType(thing);
   }
+
+  // useEffect(() => {
+  //   if (localStorage.getItem("token")) {
+  //   }
+  // }, []);
   return (
     <section className="flex h-full min-h-screen w-screen flex-col items-center justify-center gap-1">
       <div className="flex justify-center">
